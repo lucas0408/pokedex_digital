@@ -1,0 +1,231 @@
+.pokedex-navbar {
+  background-color: #e86c0c; /* faixa inferior do header */
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+
+  .nav-btn {
+    padding: 8px 16px;
+    background-color: white;
+    color: #dc2626;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &.logout {
+      background-color: white; /* cinza escuro neutro para logout */
+      
+      &:hover {
+        background-color: white;
+      }
+    }
+
+    &.admin {
+      background-color: white; /* azul vibrante para destacar o admin */
+      
+      &:hover {
+        background-color: white;
+      }
+    }
+  }
+}
+.pokemon-search input {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.pokemon-search input:focus {
+  outline: none;
+  border-color: #3b4cca;
+}
+
+.pokemon-search button {
+  background-color: #3b4cca;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pokemon-search button:hover {
+  background-color: #2f3da8;
+}
+
+/* Estilização dos Filtros de Tipo */
+.filter-buttons button {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 4px;
+}
+
+.filter-buttons button:hover {
+  background-color: #e0e0e0;
+}
+
+.filter-buttons button.active {
+  background-color: #3b4cca;
+  color: white;
+  border-color: #3b4cca;
+}
+
+.filter-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+
+  .pagination-btn {
+    background: #f0f0f0;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+    &:hover:not(:disabled) {
+      background: #ffd54f;
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.prev {
+      background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+    }
+
+    &.next {
+      background: linear-gradient(135deg, #ffca28, #ffb300);
+      color: #000;
+    }
+  }
+
+  .page-indicator {
+    background: #fff8e1;
+    padding: 8px 14px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+}
+.pokedex-container {
+  background-color: #f9f8f4;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.pokedex-header {
+  background-color: #e86c0c;
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #6a40c9;
+    z-index: -1;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem 0;
+  gap: 1rem;
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    label {
+      font-weight: 600;
+    }
+
+    button {
+      background-color: #eee;
+      border: none;
+      border-radius: 20px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button.active {
+      background-color: #e86c0c;
+      color: white;
+    }
+
+    select {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 0 2rem;
+}
+
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 5 colunas */
+  gap: 25px;
+  padding: 10px;
+}

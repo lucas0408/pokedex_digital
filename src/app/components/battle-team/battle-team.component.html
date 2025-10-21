@@ -1,0 +1,62 @@
+<div class="battle-team-container">
+  <!-- Cabeçalho -->
+<nav class="battle-nav">
+  <button class="back-button" (click)="goBack()">
+    ← Voltar
+  </button>
+</nav>
+  <header class="battle-team-header">
+    <h1>⚔️ Grupo de Batalha</h1>
+    <p>Monte seu time estratégico e prepare-se para os desafios. Gerencie os Pokémon selecionados para suas batalhas épicas.</p>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <strong>{{ battleTeam.length }}/6</strong>
+        <br />
+        <span>Pokémon</span>
+      </div>
+      <div class="stat-card highlight-attack">
+        <strong>{{ totalAttack }}</strong>
+        <br />
+        <span>⚔️ Ataque Total</span>
+      </div>
+      <div class="stat-card highlight-defense">
+        <strong>{{ totalDefense }}</strong>
+        <br />
+        <span>🛡️ Defesa Total</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tipos no Grupo -->
+  <section class="team-types" *ngIf="!loading && battleTeam.length > 0">
+    <h3>🎯 Tipos no Grupo:</h3>
+    <div class="types-container">
+      <span class="type-badge" *ngFor="let tipo of availableTypes">
+        {{ tipo }}
+      </span>
+    </div>
+  </section>
+
+  <!-- Mensagem de loading -->
+  <div *ngIf="loading" class="loading-message">
+    <div class="spinner"></div>
+    <p>Carregando seu grupo de batalha...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && battleTeam.length === 0" class="empty-state">
+    <div class="empty-icon">⚔️</div>
+    <h2>Seu Grupo de Batalha está Vazio</h2>
+    <p>Adicione até 6 Pokémon ao seu grupo para começar suas batalhas épicas!</p>
+  </div>
+
+  <!-- Grid de Pokémon (3x2) -->
+  <section class="pokemon-grid" *ngIf="!loading && battleTeam.length > 0">
+    <app-pokemon-card
+      *ngFor="let pokemon of battleTeam"
+      [pokemon]="pokemon"
+      (updated)="loadBattleTeam()"
+    ></app-pokemon-card>
+  </section>
+</div>

@@ -1,0 +1,128 @@
+<div class="pokedex-container">
+<nav class="pokedex-navbar">
+  <button class="nav-btn" (click)="goToBattleTeam()">💥 Equipe de Batalha</button>
+
+  <button 
+    class="nav-btn"
+    (click)="showingFavorites ? goToAllPokemons() : goToFavorites()"
+  >
+    ⭐ {{ showingFavorites ? 'Ver Todos' : 'Favoritos' }}
+  </button>
+
+  <button 
+    *ngIf="isAdmin"
+    class="nav-btn admin"
+    (click)="goToUserManagement()"
+  >
+    👥 Gerenciar Usuários
+  </button>
+
+  <button class="nav-btn logout" (click)="logout()">🚪 Sair</button>
+</nav>
+  <header class="pokedex-header">
+    <h1>🟠 Pokédex Digital</h1>
+    <p>Explore o mundo dos Pokémon com nossa Pokédex interativa. Descubra informações detalhadas sobre cada criatura.</p>
+    
+    <div class="stats">
+      <div><strong>{{ total }}</strong><br />Pokémon</div>
+      <div><strong>{{ tipos.length - 1 }}</strong><br />Tipos</div>
+      <div><strong>{{ geracoes.length - 1 }}</strong><br />Gerações</div>
+    </div>
+  </header>
+  <!-- Filtros -->
+  <section class="filters">
+    <div class="filter-group">
+      <label>🔍 Filtrar por tipo:</label>
+      <div class="filter-buttons">
+        <button 
+          *ngFor="let tipo of tipos"
+          (click)="filterByType(tipo)"
+          [class.active]="selectedType === tipo"
+          [disabled]="loading"
+        >
+          {{ tipo }}
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>🌍 Filtrar por geração:</label>
+      <select 
+        [(ngModel)]="selectedGeracao" 
+        (change)="onGenerationChange()"
+        [disabled]="loading"
+        class="generation-select"
+      >
+        <option *ngFor="let g of geracoes" [ngValue]="g">{{ g.nome }}</option>
+      </select>
+    </div>
+
+    <!-- Barra de pesquisa opcional -->
+    <div class="pokemon-search">
+      <input
+        type="text"
+        placeholder="Digite o nome do Pokémon"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchPokemon()"
+      />
+      <button (click)="searchPokemon()">Buscar</button>
+    </div>
+  </section>
+
+  <!-- Mensagem de loading ou erro -->
+  <div *ngIf="loading" class="loading-message">
+    <div class="spinner"></div>
+    <p>Carregando Pokémon...</p>
+  </div>
+
+  <div *ngIf="message && !loading" class="error-message">
+    {{ message }}
+  </div>
+
+  <!-- Grid de Pokémon -->
+  <section class="pokemon-grid" *ngIf="!loading">
+    <div *ngIf="filteredPokemons.length === 0" class="no-results">
+      <p>😔 Nenhum Pokémon encontrado com os filtros selecionados.</p>
+    </div>
+
+    <app-pokemon-card
+      *ngFor="let p of filteredPokemons"
+      [pokemon]="p"
+      (updated)="handleUpdated()"
+    ></app-pokemon-card>
+  </section>
+
+  <div class="pagination" *ngIf="!loading && total > 0">
+    <button 
+      (click)="onPagePrev()" 
+      [disabled]="!canPagePrevious"
+      class="pagination-btn prev"
+    >
+      ←
+    </button>
+
+    <div class="page-indicator">
+      Página <strong>{{ page }}</strong> de <strong>{{ limit }}</strong>
+    </div>
+
+    <div class="goto-page">
+      <input 
+        type="number" 
+        [(ngModel)]="gotoPageInput"
+        [min]="1"
+        [max]="limit"
+        placeholder="Ir para..."
+        (keyup.enter)="goToPage()"
+      />
+      <button (click)="goToPage()" [disabled]="!gotoPageInput">Ir</button>
+    </div>
+
+    <button 
+      (click)="onPageNext()" 
+      [disabled]="!canPageNext"
+      class="pagination-btn next"
+    >
+      →
+    </button>
+  </div>
+</div>

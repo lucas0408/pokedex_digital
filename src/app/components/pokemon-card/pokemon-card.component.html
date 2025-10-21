@@ -1,0 +1,64 @@
+<div class="card" [attr.data-type]="pokemon.tipos[0]">
+  <div class="card-header">
+    <div class="pokemon-id">#{{ pokemon.codigo }}</div>
+  </div>
+
+  <div class="image-container">
+    <img [src]="pokemon.imagem_url" [alt]="pokemon.nome" />
+  </div>
+
+  <div class="pokemon-info">
+    <h4>{{ pokemon.nome }}</h4>
+
+    <div class="types">
+      <span class="type-badge" *ngFor="let tipo of pokemon.tipos">
+        {{ tipo }}
+      </span>
+    </div>
+
+    <div class="stats">
+      <div class="stat-row">
+        <span class="stat-label">
+          <span class="stat-icon">❤️</span>
+          HP
+        </span>
+        <span class="stat-value">{{ pokemon.hp }}</span>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-bar-fill" [style.width.%]="(pokemon.hp / 255) * 100"></div>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">
+          <span class="stat-icon">⚔️</span>
+          Attack
+        </span>
+        <span class="stat-value">{{ pokemon.attack }}</span>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-bar-fill" [style.width.%]="(pokemon.attack / 255) * 100"></div>
+      </div>
+
+      <div class="stat-row">
+        <span class="stat-label">
+          <span class="stat-icon">🛡️</span>
+          Defense
+        </span>
+        <span class="stat-value">{{ pokemon.defense }}</span>
+      </div>
+      <div class="stat-bar">
+        <div class="stat-bar-fill" [style.width.%]="(pokemon.defense / 255) * 100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button (click)="toggleFavorite()" [disabled]="loadingFav">
+      {{ pokemon.favorito ? '★ Favorito' : '☆ Favoritar' }}
+    </button>
+
+    <button (click)="toggleBattleGroup()" [disabled]="loadingTeam">
+      {{ pokemon.grupo_batalha ? '− Remover do Grupo' : '+ Adicionar ao Grupo' }}
+    </button>
+  </div>
+</div>

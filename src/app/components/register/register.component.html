@@ -1,0 +1,147 @@
+<div class="register-container">
+  <div class="register-card">
+    <!-- Logo/Header -->
+    <div class="register-header">
+      <div class="pokeball-icon">⚪</div>
+      <h1>Criar Conta</h1>
+      <p>Junte-se à maior comunidade de treinadores Pokémon!</p>
+    </div>
+
+    <!-- Formulário -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      
+      <!-- Nome -->
+      <div class="form-group">
+        <label for="nome">
+          <span class="icon">👤</span>
+          Nome Completo
+        </label>
+        <input
+          id="nome"
+          type="text"
+          formControlName="nome"
+          placeholder="Digite seu nome completo"
+          [class.error]="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched"
+        />
+        <div class="error-message" *ngIf="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched">
+          <span *ngIf="registerForm.get('nome')?.errors?.['required']">Login é obrigatório</span>
+          <span *ngIf="registerForm.get('nome')?.errors?.['minlength']">Login deve ter no mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div class="form-group">
+        <label for="login">
+          <span class="icon">🎮</span>
+          Nome de Usuário
+        </label>
+        <input
+          id="login"
+          type="text"
+          formControlName="login"
+          placeholder="Escolha um nome de usuário"
+          [class.error]="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched"
+        />
+        <div class="error-message" *ngIf="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched">
+          <span *ngIf="registerForm.get('nome')?.errors?.['required']">Login é obrigatório</span>
+          <span *ngIf="registerForm.get('nome')?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">
+          <span class="icon">📧</span>
+          E-mail
+        </label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="seu@email.com"
+          [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+        <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          <span *ngIf="registerForm.get('email')?.errors?.['required']">E-mail é obrigatório</span>
+          <span *ngIf="registerForm.get('email')?.errors?.['email']">E-mail inválido</span>
+        </div>
+      </div>
+
+      <!-- Senha -->
+      <div class="form-group">
+        <label for="senha">
+          <span class="icon">🔒</span>
+          Senha
+        </label>
+        <div class="password-input">
+          <input
+            id="senha"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="senha"
+            placeholder="Crie uma senha segura"
+            [class.error]="registerForm.get('senha')?.invalid && registerForm.get('senha')?.touched"
+          />
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        <div class="error-message" *ngIf="registerForm.get('senha')?.invalid && registerForm.get('senha')?.touched">
+          <span *ngIf="registerForm.get('senha')?.errors?.['required']">Senha é obrigatória</span>
+          <span *ngIf="registerForm.get('senha')?.errors?.['minlength']">Senha deve ter no mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="form-group">
+        <label for="confirmarSenha">
+          <span class="icon">🔐</span>
+          Confirmar Senha
+        </label>
+        <input
+          id="confirmarSenha"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="confirmarSenha"
+          placeholder="Digite a senha novamente"
+          [class.error]="registerForm.get('confirmarSenha')?.invalid && registerForm.get('confirmarSenha')?.touched"
+        />
+        <div class="error-message" *ngIf="registerForm.get('confirmarSenha')?.invalid && registerForm.get('confirmarSenha')?.touched">
+          <span *ngIf="registerForm.get('confirmarSenha')?.errors?.['required']">Confirmação é obrigatória</span>
+        </div>
+        <div class="error-message" *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmarSenha')?.touched">
+          <span>As senhas não coincidem</span>
+        </div>
+      </div>
+
+      <!-- Mensagem de erro do servidor -->
+      <div class="server-error" *ngIf="errorMessage">
+        <span class="error-icon">⚠️</span>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Mensagem de sucesso -->
+      <div class="success-message" *ngIf="successMessage">
+        <span class="success-icon">✅</span>
+        {{ successMessage }}
+      </div>
+
+      <!-- Botão de Submit -->
+      <button 
+        type="submit" 
+        class="submit-btn"
+        [disabled]="registerForm.invalid || loading"
+      >
+        <span *ngIf="!loading">Criar Conta</span>
+        <span *ngIf="loading" class="loading-spinner">
+          <span class="spinner"></span>
+          Criando...
+        </span>
+      </button>
+
+      <!-- Link para Login -->
+      <div class="login-link">
+        Já tem uma conta? 
+        <a routerLink="/login">Fazer login</a>
+      </div>
+    </form>
+  </div>
+</div>

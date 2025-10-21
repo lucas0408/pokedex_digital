@@ -1,0 +1,153 @@
+<div class="user-management-container">
+  <!-- Cabeçalho -->
+   <nav class="battle-nav">
+    <button class="back-button" (click)="goToListPokemon()">
+      ← Voltar
+    </button>
+  </nav>
+  <header class="user-management-header">
+    <h1>👥 Gerenciamento de Usuários</h1>
+    <p>Gerencie todos os usuários cadastrados na plataforma. Altere permissões e visualize estatísticas.</p>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <strong>{{ usuarios.length }}</strong>
+        <br />
+        <span>Usuários</span>
+      </div>
+      <div class="stat-card">
+        <strong>{{ getAdminCount() }}</strong>
+        <br />
+        <span>Administradores</span>
+      </div>
+      <div class="stat-card">
+        <strong>{{ getTotalPokemons() }}</strong>
+        <br />
+        <span>Pokémon Total</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner-large"></div>
+    <p>Carregando usuários...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !loading" class="error-banner">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+    <button class="close-btn" (click)="errorMessage = ''">✕</button>
+  </div>
+
+  <!-- Users Table -->
+  <div class="table-container" *ngIf="!loading && usuarios.length > 0">
+    <div class="table-header">
+      <h2>📋 Lista de Usuários</h2>
+      <div class="table-actions">
+        <input 
+          type="text" 
+          placeholder="🔍 Buscar usuário..."
+          [(ngModel)]="searchTerm"
+          (input)="filterUsers()"
+          class="search-input"
+        />
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>👤 Nome</th>
+            <th>🎮 Login</th>
+            <th>📧 E-mail</th>
+            <th>🔑 Permissão</th>
+            <th>⚪ Pokémon</th>
+            <th>📅 Cadastro</th>
+            <th>⚙️ Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of filteredUsuarios; let i = index" class="user-row">
+            <td class="user-id">{{ usuario.id }}</td>
+            
+            <td class="user-name">
+              <div class="name-cell">
+                <div class="avatar">{{ getInitials(usuario.nome) }}</div>
+                <span>{{ usuario.nome }}</span>
+              </div>
+            </td>
+            
+            <td class="user-login">
+              <span class="badge badge-secondary">{{ usuario.login }}</span>
+            </td>
+            
+            <td class="user-email">{{ usuario.email }}</td>
+            
+            <td class="user-role">
+              <select 
+                [(ngModel)]="usuario.role" 
+                (change)="changeRole(usuario, usuario.role)"
+                [class]="'role-select role-' + usuario.role"
+              >
+                <option value="user">👤 User</option>
+                <option value="admin">👑 Admin</option>
+              </select>
+            </td>
+            
+            <td class="user-pokemons">
+              <span class="pokemon-count">{{ usuario.total_pokemons || 0 }}</span>
+            </td>
+            
+            <td class="user-date">
+              {{ usuario.dt_inclusao | date:'dd/MM/yyyy' }}
+            </td>
+            
+            <td class="user-actions">
+              <button 
+                class="btn-delete" 
+                (click)="confirmDelete(usuario)"
+                title="Excluir usuário"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination (se necessário) -->
+    <div class="table-footer">
+      <p>Mostrando {{ filteredUsuarios.length }} de {{ usuarios.length }} usuários</p>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && usuarios.length === 0" class="empty-state">
+    <div class="empty-icon">👥</div>
+    <h2>Nenhum usuário encontrado</h2>
+    <p>Não há usuários cadastrados no sistema.</p>
+  </div>
+</div>
+
+<!-- Modal de Confirmação -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>⚠️ Confirmar Exclusão</h3>
+      <button class="close-modal" (click)="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Deseja realmente excluir o usuário <strong>{{ userToDelete?.nome }}</strong>?</p>
+      <p class="warning-text">Esta ação não pode ser desfeita!</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModal()">Cancelar</button>
+      <button class="btn-confirm-delete" (click)="deleteUser()">Excluir</button>
+    </div>
+  </div>
+</div>
